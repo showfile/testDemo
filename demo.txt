@@ -1,0 +1,40 @@
+a1.sources = r1
+
+a1.sinks = k1 k2
+
+a1.channels = c1 c2
+
+# Describe/configure the source
+
+a1.sources.r1.type = org.apache.flume.source.kafka.KafkaSource
+a1.sources.r1.zookeeperConnect = hdfs02.edcs.org:2181
+a1.sources.r1.topic = testTopic
+a1.sources.r1.kafka.consumer.timeout.ms = 1000
+
+# Describe the sink
+a1.sources.k1.channels = c1
+a1.sinks.k1.channel = c1
+a1.sinks.k1.type = hdfs
+a1.sinks.k1.hdfs.path = hdfs://hdfs02.edcs.org:8020/dsmp/
+a1.sinks.k1.hdfs.writeFormat = Text
+a1.sinks.k1.hdfs.fileType = DataStream
+
+a1.sources.k2.channels = c2
+a1.sinks.sink2.type = file_roll
+a1.sinks.sink2.channel = c2
+a1.sinks.sink2.sink.directory = /opt/Repository/del_flume_test
+
+
+# Use a channel which buffers events in memory
+
+a1.channels.c1.type= memory
+
+a1.channels.c1.capacity = 1000
+
+a1.channels.c1.transactionCapacity = 100
+
+a1.channels.c2.type= memory
+
+a1.channels.c2.capacity = 1000
+
+a1.channels.c2.transactionCapacity = 100
